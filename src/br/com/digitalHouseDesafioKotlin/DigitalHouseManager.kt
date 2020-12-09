@@ -13,16 +13,17 @@ class DigitalHouseManager() {
             codigo:Int,
             quantidadeMaximaDeAlunos:Int,
             quantidadeVagasDisponiveis: Int
-        ){
+        ):Curso?{
 
         var curso = Curso(nome, codigo, quantidadeMaximaDeAlunos, quantidadeVagasDisponiveis);
 
         if(listaCursos.contains(curso)){
             println("Não foi possível incluir o curso! O mesmo já foi incluído.");
-            return;
+            return null;
         }
 
         listaCursos.add(curso);
+        return curso;
     }
     fun excluirCurso(codigo:Int){
 
@@ -47,34 +48,36 @@ class DigitalHouseManager() {
             sobrenome:String,
             codigoProfessor:Int,
             quantidadeDeHorasMonitoria:Int
-        ){
+        ): ProfessorAdjunto?{
 
         var professorAjunto = ProfessorAdjunto(quantidadeDeHorasMonitoria, codigoProfessor, nome, sobrenome);
 
         if(listaProfessores.contains(professorAjunto)){
             println("Não foi possível incluir o professor adjunto! Registro já incluído.")
-            return;
+            return null;
         }
 
         listaProfessores.add(professorAjunto);
         println("Professor adjunto incluído com sucesso!")
+        return professorAjunto;
     }
     fun registrarProfessorTitular(
             nome:String,
             sobrenome:String,
             codigoProfessor:Int,
             especialidade:String
-        ){
+        ): ProfessorTitular? {
 
         var professorTitular = ProfessorTitular(especialidade, codigoProfessor, nome, sobrenome);
 
         if(listaProfessores.contains(professorTitular)){
             println("Não foi possível incluir o professor titular! Registro já incluído.");
-            return;
+            return null;
         }
 
         listaProfessores.add(professorTitular);
-        println("Professor titulo incluído com sucesso!");
+        println("Professor titular incluído com sucesso!");
+        return professorTitular;
     }
     fun excluirProfessor(codigoProfessor:Int){
 
@@ -128,7 +131,7 @@ class DigitalHouseManager() {
         //Pesquisando o curso
         var curso : Curso? = null;
         if(listaCursos.size > 0){
-            for(i in 0 .. listaCursos.size){
+            for(i in 0 .. listaCursos.size-1){
                 if(listaCursos.get(i).codigo == codigoCurso){
                     curso = listaCursos.get(i);
                 }
@@ -188,14 +191,16 @@ class DigitalHouseManager() {
         }
 
         var curso :Curso? = null;
-        for(i in 0 .. listaCursos.size){
-            if(listaCursos.get(i).codigo == codigoCurso){
-                curso = listaCursos.get(i);
-                listaCursos.get(i).professorAjunto = professorAdjunto;
-                listaCursos.get(i).professorTitular = professorTitular;
+        if(listaCursos.size >= 0){
+            for(i in 0 .. listaCursos.size){
+                if(listaCursos.get(i).codigo == codigoCurso){
+                    curso = listaCursos.get(i);
+                    listaCursos.get(i).professorAjunto = professorAdjunto;
+                    listaCursos.get(i).professorTitular = professorTitular;
 
-                println("Professores alocados com sucesso!")
-                break;
+                    println("Professores alocados com sucesso!")
+                    break;
+                }
             }
         }
         if(curso == null){
